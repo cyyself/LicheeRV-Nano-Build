@@ -84,6 +84,13 @@
                 i2c-gpio,delay-us = <5>;
                 status = "disabled";
         };
+
+	hdmi_osc: hdmi-osc {
+		compatible = "fixed-clock";
+		clock-output-names = "hdmi-osc";
+		clock-frequency = <27000000>;
+		#clock-cells = <0>;
+	};
 };
 
 &i2c0 {
@@ -156,4 +163,23 @@
 
 &mipi_rx {
         snsr-reset = <&porte 1 GPIO_ACTIVE_LOW>;
+};
+
+&i2c4 {
+	tc358743@f {
+		compatible = "toshiba,tc358743";
+		reg = <0x0f>;
+		clocks = <&hdmi_osc>;
+		clock-names = "refclk";
+
+		port {
+			tc358743_out: endpoint {
+				remote-endpoint = <&mipi_rx>;
+				data-lanes = <1>;
+				clock-lanes = <0>;
+				clock-noncontinuous;
+				link-frequencies = /bits/ 64 <297000000>;
+			};
+		};
+	};
 };
