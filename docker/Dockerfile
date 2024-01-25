@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 COPY libssl.so.1.1 /usr/local/lib/
 COPY libcrypto.so.1.1 /usr/local/lib/
 
-RUN ldconfig && apt update -y && \
+RUN ldconfig && sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list && apt update -y && \
 	apt install -y pkg-config build-essential ninja-build\
 	automake autoconf libtool wget curl git gcc libssl-dev bc\
 	slib squashfs-tools android-sdk-libsparse-utils rsync\
